@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AWS
+
+  SAM Template for Logger App
+
+Globals:
+  Function:
+    Timeout: 20
+
+Resources:
+  LoggerAppFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: LoggerApp
+      Handler: com.aws.logger.LogLevelTest::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: "-DLOG_LEVEL=DEBUG"
+      Events:
+        LoggerApp:
+          Type: Api
+          Properties:
+            Path: /loglevel
+            Method: get
+
+Outputs:
+
+  LoggerLevelApi:
+    Description: "API Gateway endpoint URL for LoggerAppFunction"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/logger/"
+  LoggerAppFunction:
+    Description: "LoggerApp Function Lambda Function ARN"
+    Value: !GetAtt LoggerAppFunction.Arn
+  LoggerAppFunctionIamRole:
+    Description: "Implicit IAM Role created for LoggerApp function"
+    Value: !GetAtt LoggerAppFunctionRole.Arn
