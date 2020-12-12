@@ -14,17 +14,11 @@ public class ListSecretManagerTest {
     static final Logger logger = LogManager.getLogger(ListSecretManagerTest.class);
 
     public static void main(String[] args) {
-        //String secretName = "DdApiKeySecret-lQ8hzWxNmW2m";
+        // Replace with your Secret ARN before executing
         String secretName = "arn:aws:secretsmanager:ap-southeast-2:";
-        //String secretName = "aws:cloudformation:stack-name";
         String region = "ap-southeast-2";
 
-
-        AWSSecretsManager client  = AWSSecretsManagerClientBuilder.standard()
-                .withRegion(region)
-                .build();
-
-
+        AWSSecretsManager client  = AWSSecretsManagerClientBuilder.standard().withRegion(region).build();
 
         String secret = null;
         String decodedBinarySecret = null;
@@ -34,7 +28,6 @@ public class ListSecretManagerTest {
 
         ListSecretsRequest listRequest = new ListSecretsRequest();
         Filter filter = new Filter();
-        //filter.w
         listRequest.withFilters();
         ListSecretsResult listSecretsResult = null;
 
