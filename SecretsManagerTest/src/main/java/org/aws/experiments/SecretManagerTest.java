@@ -1,5 +1,6 @@
 package org.aws.experiments;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 import com.amazonaws.services.secretsmanager.model.*;
@@ -16,9 +17,9 @@ public class SecretManagerTest {
     static final Logger logger = LogManager.getLogger(SecretManagerTest.class);
 
     public static void main(String[] args) throws IOException {
-        //String secretName = "DdApiKeySecret-lQ8hzWxNmW2m";
-        String secretName = "arn:aws:secretsmanager:ap-southeast-2:";
-        //String secretName = "aws:cloudformation:stack-name";
+
+        // Replace with your Secret ARN before executing
+        String secretName = "arn:aws:secretsmanager:ap-southeast-2:XXXXXXXXXXXXX";
         String region = "ap-southeast-2";
 
 
