@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Outputs the time
+
+Resources:
+  TestAWSApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod  
+  
+  CreateResourceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.firstsample.FirstLambdaApp::handleRequest
+      Role: arn:aws:iam::240585425410:role/BasicLambdaRole
+      Runtime: java11
+      CodeUri: firstsample
+      Events:
+        MyApi:
+          Type: Api
+          Properties:
+            Path: /resource
+            Method: POST
+            RestApiId: !Ref TestAWSApiGateway
+  
+  ReadResourceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.secondsample.SecondLambdaApp::handleRequest
+      Role: arn:aws:iam::240585425410:role/BasicLambdaRole
+      Runtime: java11
+      CodeUri: secondsample
+      Events:
+        MyApi:
+          Type: Api
+          Properties:
+            Path: /resource
+            Method: GET
+            RestApiId: !Ref TestAWSApiGateway
+
+Outputs:
+
+  TestAWSApiGateway:
+    Description: 'API Gateway endpoint URL for Staging stage for Hello World function'
+    Value: !Sub 'https://${TestAWSApiGateway}.execute-api.${AWS::Region}.amazonaws.com'
+    Export:
+      Name: !Join
+        - '-'
+        - - !Ref 'AWS::StackName'
+          - test-api-gateway-url
+
+  TestAWSApiGatewayRestApiId:
+    Description: 'API Gateway ARN for Basic AWS API Gateway'
+    Value: !Ref TestAWSApiGateway
+    Export:
+      Name: !Join
+        - '-'
+        - - !Ref 'AWS::StackName'
+          - test-api-gateway-restapiid
+
+  TestAWSApiGatewayRootResourceId:
+    Value: !GetAtt TestAWSApiGateway.RootResourceId
+    Export:
+      Name: !Join
+        - '-'
+        - - !Ref 'AWS::StackName'
+          - test-api-gateway-resourceid
